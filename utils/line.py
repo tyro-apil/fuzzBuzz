@@ -30,12 +30,12 @@ class Line:
     def _calculateSlope(self) -> Optional[float]:
         if self.isVertical:
             return None
-        return (self.end.y - self.start.y)/(self.end.x - self.start.x)
-    
+        return round((self.end.y - self.start.y)/(self.end.x - self.start.x), 2) 
+       
     def _calculateYIntercept(self) -> Optional[float]:
         if self.isVertical:
             return None
-        return self.start.y - self._slope*self.start.x
+        return round(self.start.y - self._slope*self.start.x, 2)
 
     def calculateX(self, y: float) -> Optional[float]:
         if self.isHorizontal:
@@ -43,7 +43,7 @@ class Line:
         if self.isVertical:
             return self.start.x
         
-        return ((y-self.start.y)*(self.end.x-self.start.x)/(self.end.y-self.start.y)) + self.start.x
+        return round(((y-self.start.y)*(self.end.x-self.start.x)/(self.end.y-self.start.y)) + self.start.x, 2)
     
     def calculateY(self, x: float) -> Optional[float]:
         if self.isVertical:
@@ -51,7 +51,7 @@ class Line:
         if self.isHorizontal:
             return self.start.y
         
-        return ((x-self.start.x)*(self.end.y-self.start.y)/(self.end.x-self.start.x)) + self.start.y
+        return round(((x-self.start.x)*(self.end.y-self.start.y)/(self.end.x-self.start.x)) + self.start.y, 2)
     
 
 def calculateIntersection(line1: Line, line2: Line) -> Optional[Point]:
@@ -72,4 +72,4 @@ def calculateIntersection(line1: Line, line2: Line) -> Optional[Point]:
     
     x = (line2._yIntercept - line1._yIntercept) / (line1._slope - line2._slope)
     y = line1._slope * x + line1._yIntercept
-    return Point(x=x, y=y)
+    return Point(x=round(x, 2), y=round(y, 2))
