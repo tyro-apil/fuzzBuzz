@@ -73,3 +73,14 @@ def calculateIntersection(line1: Line, line2: Line) -> Optional[Point]:
     x = (line2._yIntercept - line1._yIntercept) / (line1._slope - line2._slope)
     y = line1._slope * x + line1._yIntercept
     return Point(x=round(x, 2), y=round(y, 2))
+
+def calculateIntersection_unextended(line1: Line, line2: Line) -> Optional[Point]:
+    intersection = calculateIntersection(line1=line1, line2=line2)
+    if intersection is not None:
+        if not ((max(line1.end.x, line1.start.x) >= intersection.x >= min(line1.end.x, line1.start.x)) and \
+                (max(line2.end.x, line2.start.x) >= intersection.x >= min(line2.end.x, line2.start.x)) and \
+                (max(line1.end.y, line1.start.y) >= intersection.y >= min(line1.end.y, line1.start.y)) and \
+                (max(line2.end.y, line2.start.y) >= intersection.y >= min(line2.end.y, line2.start.y))\
+                ):
+            intersection = None
+    return intersection
