@@ -54,6 +54,9 @@ class TrapMemFn:
         return target_line.calculateY(x)
     
     def generatePortionPoints(self, fraction: float) -> List[Point]:
+        if fraction == 1.0:
+            return self.points
+        
         portionPoints: List[Point] = []
         portionPoints.append(self.points[0])
 
