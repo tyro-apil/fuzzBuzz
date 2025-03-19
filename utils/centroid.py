@@ -28,6 +28,7 @@ def get_area(poly: Polygon) -> float:
     
 
     area =abs( 0.5 * area)
+
     
     return area
 
@@ -37,6 +38,9 @@ def get_centroid(poly: Polygon) -> Point:
     c_y = 0.0
     assert(l > 2)
     area = get_area(poly)
+    if area == 0:
+        return Point(0, 0)  
+
     for i in range(l-1):
         x1 = poly.points[i].x
         y1 = poly.points[i].y
@@ -54,8 +58,11 @@ def get_centroid(poly: Polygon) -> Point:
     c_x+= (x1*y2 - x2* y1) * (x1+x2)
     c_y+= (x1*y2 - x2* y1) * (y1+y2)
 
+
     c_x = abs(c_x) / (6 * area)
     c_y = abs(c_y) / (6 * area)
+
+
 
     return Point(abs(c_x),abs(c_y))
 
