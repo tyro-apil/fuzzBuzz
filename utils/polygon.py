@@ -69,5 +69,13 @@ def combinePolygons(poly1: Polygon, poly2: Polygon) -> Polygon:
     combined_points += intersection_points
 
     combined_points = sorted(combined_points, key=lambda point: (point.x, point.y))
+
+    ## Fix same x-coodinates problem
+    for i in range(len(combined_points)-1):
+        if combined_points[i].x == combined_points[i+1].x:
+            if i!=0:
+                if combined_points[i-1].y != combined_points[i].y:
+                    combined_points[i],combined_points[i+1]=combined_points[i+1],combined_points[i]
+    
     combined_polygon = Polygon(combined_points)
     return combined_polygon
