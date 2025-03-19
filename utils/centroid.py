@@ -7,7 +7,7 @@ Utilities to find centroid
 from .line import Point
 from .polygon import Polygon
 
-def get_area(poly: Polygon):
+def get_area(poly: Polygon) -> float:
     l = poly.noOfPoints
     area = 0.0
     assert(l > 2)
@@ -31,7 +31,7 @@ def get_area(poly: Polygon):
     
     return area
 
-def get_centroid(poly: Polygon):
+def get_centroid(poly: Polygon) -> Point:
     l = poly.noOfPoints
     c_x = 0.0
     c_y = 0.0
