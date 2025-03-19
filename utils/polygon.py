@@ -52,6 +52,8 @@ def combinePolygons(poly1: Polygon, poly2: Polygon) -> Polygon:
             intersectPoint = calculateIntersection_unextended(linePoly1, linePoly2)
             if intersectPoint is not None:
                 intersection_points.append(intersectPoint)
+
+    assert len(intersection_points) != 0
     
     # Sort the intersection points
     intersection_points: List[Point] = sorted(intersection_points, key=lambda point: (point.x, point.y))
