@@ -1,10 +1,11 @@
 import matplotlib.pyplot as plt
+import os
 
 # Import the Fuzzy Inference System components
 from src.fis import FuzzyInferenceSystem
 from src.linguisticVariable import LinguisticVariable
 from src.membershipFunction import MembershipFunctionFactory
-from utils.visualize import *
+from utils.visualize import visualize_defuzzification, visualize_rule_activation, visualize_membership_functions, visualize_detailed_rule_activation
 
 def main():
     # Create fuzzy inference system (copied from usage.py)
@@ -13,37 +14,37 @@ def main():
     # Create input variable: temperature
     temperature = LinguisticVariable("temperature", [0, 50])
     temperature.add_membership_function(
-        MembershipFunctionFactory.create_triangular("cold", [0, 10, 20])
+        MembershipFunctionFactory.create_trapezoidal("cold", [0, 0, 10, 20])
     )
     temperature.add_membership_function(
         MembershipFunctionFactory.create_triangular("normal", [15, 25, 35])
     )
     temperature.add_membership_function(
-        MembershipFunctionFactory.create_triangular("hot", [30, 40, 50])
+        MembershipFunctionFactory.create_trapezoidal("hot", [30, 40, 50, 50])
     )
     
     # Create input variable: humidity
     humidity = LinguisticVariable("humidity", [0, 100])
     humidity.add_membership_function(
-        MembershipFunctionFactory.create_triangular("low", [0, 25, 50])
+        MembershipFunctionFactory.create_trapezoidal("low", [0, 0, 25, 50])
     )
     humidity.add_membership_function(
         MembershipFunctionFactory.create_triangular("medium", [25, 50, 75])
     )
     humidity.add_membership_function(
-        MembershipFunctionFactory.create_triangular("high", [50, 75, 100])
+        MembershipFunctionFactory.create_trapezoidal("high", [50, 75, 100, 100])
     )
     
     # Create output variable: fan_speed
     fan_speed = LinguisticVariable("fan_speed", [0, 100])
     fan_speed.add_membership_function(
-        MembershipFunctionFactory.create_triangular("slow", [0, 25, 50])
+        MembershipFunctionFactory.create_trapezoidal("slow", [0, 0, 25, 50])
     )
     fan_speed.add_membership_function(
         MembershipFunctionFactory.create_triangular("medium", [25, 50, 75])
     )
     fan_speed.add_membership_function(
-        MembershipFunctionFactory.create_triangular("fast", [50, 75, 100])
+        MembershipFunctionFactory.create_trapezoidal("fast", [50, 75, 100, 100])
     )
     
     # Add variables to the fuzzy inference system
@@ -72,19 +73,23 @@ def main():
     print(f"Input: Temperature = {inputs['temperature']}°C, Humidity = {inputs['humidity']}%")
     print(f"Output: Fan Speed = {result['fan_speed']}%")
     
+    graph_path="graphs"
+    if not os.path.exists(graph_path):
+        os.makedirs(graph_path)
+
     # Visualize the membership functions
     temp_plot = visualize_membership_functions(temperature, inputs["temperature"])
-    # temp_plot.savefig("temperature_membership.png")
+    # temp_plot.savefig(os.path.join(graph_path, "temperature_membership.png"))
     
     humidity_plot = visualize_membership_functions(humidity, inputs["humidity"])
-    # humidity_plot.savefig("humidity_membership.png")
+    # humidity_plot.savefig(os.path.join(graph_path, "humidity_membership.png"))
     
     # Visualize rule activation
     rule_plot, rule_activations = visualize_rule_activation(fis, inputs)
-    # rule_plot.savefig("rule_activation.png")
+    # rule_plot.savefig(os.path.join(graph_path, "rule_activation.png"))
 
     detailed_rule_plot = visualize_detailed_rule_activation(fis, inputs)
-    # rule_plot.savefig("rule_activation.png")
+    # detailed_rule_plot.savefig(os.path.join(graph_path, "rule_activation.png"))
 
     
     # Print rule activations
@@ -94,7 +99,7 @@ def main():
     
     # Visualize defuzzification
     defuzz_plot = visualize_defuzzification(fis, inputs)
-    # defuzz_plot.savefig("defuzzification.png")
+    # defuzz_plot.savefig(os.path.join(graph_path, "defuzzification.png"))
     
     plt.show()
 
