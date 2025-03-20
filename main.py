@@ -155,7 +155,7 @@ def main():
         sys.exit(1)
     
     image_path = sys.argv[1]
-    threshold = 50  # Default threshold
+    threshold = 25  # Default threshold
     
     if len(sys.argv) >= 3:
         threshold = int(sys.argv[2])
