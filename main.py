@@ -19,37 +19,37 @@ def create_edge_detection_fis():
     # Create input variable: intensity_diff (represents difference in neighboring pixels)
     intensity_diff = LinguisticVariable("intensity_diff", [0, 255])
     intensity_diff.add_membership_function(
-        MembershipFunctionFactory.create_triangular("small", [0, 10, 30])
+        MembershipFunctionFactory.create_trapezoidal("small", [0, 0, 10, 30])
     )
     intensity_diff.add_membership_function(
         MembershipFunctionFactory.create_triangular("medium", [20, 50, 80])
     )
     intensity_diff.add_membership_function(
-        MembershipFunctionFactory.create_triangular("large", [60, 120, 255])
+        MembershipFunctionFactory.create_trapezoidal("large", [60, 120, 255, 255])
     )
     
     # Create input variable: neighborhood_variance (local variance in a small window)
     neighborhood_variance = LinguisticVariable("neighborhood_variance", [0, 5000])
     neighborhood_variance.add_membership_function(
-        MembershipFunctionFactory.create_triangular("low", [0, 500, 1000])
+        MembershipFunctionFactory.create_trapezoidal("low", [0, 0, 500, 1000])
     )
     neighborhood_variance.add_membership_function(
         MembershipFunctionFactory.create_triangular("medium", [700, 1500, 2500])
     )
     neighborhood_variance.add_membership_function(
-        MembershipFunctionFactory.create_triangular("high", [2000, 3500, 5000])
+        MembershipFunctionFactory.create_trapezoidal("high", [2000, 3500, 5000, 5000])
     )
     
     # Create output variable: edge_strength
     edge_strength = LinguisticVariable("edge_strength", [0, 100])
     edge_strength.add_membership_function(
-        MembershipFunctionFactory.create_triangular("weak", [0, 20, 40])
+        MembershipFunctionFactory.create_trapezoidal("weak", [0, 0, 20, 40])
     )
     edge_strength.add_membership_function(
         MembershipFunctionFactory.create_triangular("moderate", [30, 50, 70])
     )
     edge_strength.add_membership_function(
-        MembershipFunctionFactory.create_triangular("strong", [60, 80, 100])
+        MembershipFunctionFactory.create_trapezoidal("strong", [60, 80, 100, 100])
     )
     
     # Add variables to the fuzzy inference system
