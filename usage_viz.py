@@ -77,14 +77,16 @@ def main():
     if not os.path.exists(graph_path):
         os.makedirs(graph_path)
 
-    # Visualize the membership functions
     temp_plot = visualize_membership_functions(temperature, inputs["temperature"])
     # temp_plot.savefig(os.path.join(graph_path, "temperature_membership.png"))
     
     humidity_plot = visualize_membership_functions(humidity, inputs["humidity"])
     # humidity_plot.savefig(os.path.join(graph_path, "humidity_membership.png"))
     
-    # Visualize rule activation
+    fan_speed_plot = visualize_membership_functions(fan_speed)
+    # fan_speed_plot.savefig(os.path.join(graph_path, "fan_speed_membership.png"))
+    
+
     rule_plot, rule_activations = visualize_rule_activation(fis, inputs)
     # rule_plot.savefig(os.path.join(graph_path, "rule_activation.png"))
 
@@ -92,12 +94,10 @@ def main():
     # detailed_rule_plot.savefig(os.path.join(graph_path, "rule_activation.png"))
 
     
-    # Print rule activations
     print("\nRule Activations:")
     for i, activation in enumerate(rule_activations):
         print(f"Rule {i+1}: {activation:.2f}")
     
-    # Visualize defuzzification
     defuzz_plot = visualize_defuzzification(fis, inputs)
     # defuzz_plot.savefig(os.path.join(graph_path, "defuzzification.png"))
     
