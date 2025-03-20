@@ -201,6 +201,11 @@ def visualize_detailed_rule_activation(fis, inputs):
     """
     Visualize the detailed rule activation process, showing AND/OR operations
     """
+    # Import required libraries if not already imported
+    import numpy as np
+    from matplotlib.gridspec import GridSpec
+    import matplotlib.pyplot as plt
+    
     # Count number of rules
     num_rules = len(fis.rules)
     
@@ -235,11 +240,11 @@ def visualize_detailed_rule_activation(fis, inputs):
             # Plot the membership function
             x_min, x_max = var.range
             x = np.linspace(x_min, x_max, 1000)
-            y = [mem_fn.calculateMembershipDegree(val) for val in x]
+            y = np.array([mem_fn.calculateMembershipDegree(val) for val in x], dtype=float)
             ax.plot(x, y, label=label)
             
             # Plot the input value and its membership degree
-            input_value = inputs[var_name]
+            input_value = float(inputs[var_name])
             membership_degree = mem_fn.calculateMembershipDegree(input_value)
             
             # Apply operator
@@ -259,8 +264,18 @@ def visualize_detailed_rule_activation(fis, inputs):
             
             # Fill the area under the curve up to the membership degree
             if membership_degree > 0:
-                ax.fill_between(x, 0, y, where=(x <= input_value), alpha=0.3, color='green')
-                ax.fill_between(x, 0, y, where=(x > input_value), alpha=0.3, color='blue')
+                # Avoid using where parameter - split the data manually
+                x_before = np.array([x_val for x_val in x if x_val <= input_value], dtype=float)
+                y_before = np.array([mem_fn.calculateMembershipDegree(x_val) for x_val in x_before], dtype=float)
+                
+                x_after = np.array([x_val for x_val in x if x_val > input_value], dtype=float)
+                y_after = np.array([mem_fn.calculateMembershipDegree(x_val) for x_val in x_after], dtype=float)
+                
+                if len(x_before) > 0:
+                    ax.fill_between(x_before, 0, y_before, alpha=0.3, color='green')
+                
+                if len(x_after) > 0:
+                    ax.fill_between(x_after, 0, y_after, alpha=0.3, color='blue')
                 
                 # Plot the membership degree
                 ax.plot([input_value, input_value], [0, membership_degree], 'r--')
@@ -332,14 +347,19 @@ def visualize_detailed_rule_activation(fis, inputs):
         # Plot the original membership function
         x_min, x_max = var.range
         x = np.linspace(x_min, x_max, 1000)
-        y = [mem_fn.calculateMembershipDegree(val) for val in x]
+        y = np.array([mem_fn.calculateMembershipDegree(val) for val in x], dtype=float)
         ax.plot(x, y, '--', label=f'{label} (original)', alpha=0.5)
         
         # Plot the activated membership function
         if current_activation > 0:
-            portion_points = mem_fn.generatePortionPoints(current_activation)
-            xy = np.array([(p.x, p.y) for p in portion_points])
-            ax.fill(xy[:, 0], xy[:, 1], alpha=0.5, color='red', label=f'{label} (activated)')
+            try:
+                portion_points = mem_fn.generatePortionPoints(current_activation)
+                if portion_points:
+                    xy = np.array([(float(p.x), float(p.y)) for p in portion_points], dtype=float)
+                    ax.fill(xy[:, 0], xy[:, 1], alpha=0.5, color='red', label=f'{label} (activated)')
+            except:
+                # If there's an error with the portion points, skip this part
+                pass
             
             # Draw a horizontal line at the activation level
             ax.axhline(y=current_activation, color='r', linestyle='--', alpha=0.8)
@@ -354,4 +374,4 @@ def visualize_detailed_rule_activation(fis, inputs):
     plt.tight_layout()
     plt.subplots_adjust(top=0.95)
     
-    return plt
+    return fig
