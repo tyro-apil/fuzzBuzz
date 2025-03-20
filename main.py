@@ -183,9 +183,9 @@ def main():
         plt.show()
         
         # Save output
-        output_path = image_path.split('.')[0] + '_edges.png'
-        cv2.imwrite(output_path, edge_map)
-        print(f"Edge map saved to: {output_path}")
+        # output_path = image_path.split('.')[0] + '_edges.png'
+        # cv2.imwrite(output_path, edge_map)
+        # print(f"Edge map saved to: {output_path}")
         
     except Exception as e:
         print(f"Error: {e}")
