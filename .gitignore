@@ -1,3 +1,4 @@
 .env/
 test.ipynb
 __pycache__/
+images/
