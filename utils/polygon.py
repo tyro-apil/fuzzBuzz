@@ -25,11 +25,16 @@ class Polygon:
         self.xmin = self.points[0].x
         self.xmax = self.points[self.noOfPoints-1].x
 
-        self.ymin = 0
+        # Initialize ymin and ymax with the first point's y value
+        self.ymin = self.points[0].y
         self.ymax = self.points[0].y
+        
+        # Then find the actual min and max
         for i in range(self.noOfPoints):
             if self.points[i].y > self.ymax:
                 self.ymax = self.points[i].y
+            if self.points[i].y < self.ymin:
+                self.ymin = self.points[i].y
     
     def displayPoints(self):
         for pt in self.points:
@@ -44,7 +49,6 @@ def combinePolygons(poly1: Polygon, poly2: Polygon) -> Polygon:
     if poly1.xmin > poly2.xmin:
         poly1, poly2 = poly2, poly1
     
-
     # Find intersections inside the region bounded by min and max
     intersection_points: List[Point] = []
     for i, linePoly1 in enumerate(poly1.lines):
@@ -53,7 +57,12 @@ def combinePolygons(poly1: Polygon, poly2: Polygon) -> Polygon:
             if intersectPoint is not None:
                 intersection_points.append(intersectPoint)
 
-    assert len(intersection_points) != 0
+    # Handle case where polygons don't intersect
+    if len(intersection_points) == 0:
+        # Return union of points if no intersection
+        all_points = poly1.points + poly2.points
+        sorted_points = sorted(all_points, key=lambda point: (point.x, point.y))
+        return Polygon(sorted_points)
     
     # Sort the intersection points
     intersection_points: List[Point] = sorted(intersection_points, key=lambda point: (point.x, point.y))
