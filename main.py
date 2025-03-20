@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from src.fis import FuzzyInferenceSystem
 from src.linguisticVariable import LinguisticVariable
 from src.membershipFunction import MembershipFunctionFactory
+from utils.image import resizeImgWidth
 
 def create_edge_detection_fis():
     """Create and configure a fuzzy inference system for edge detection"""
@@ -113,6 +114,7 @@ def detect_edges(image_path, threshold=50):
     if img is None:
         raise ValueError(f"Could not read image at {image_path}")
     
+    img = resizeImgWidth(img)
     # Create edge map (same size as input image)
     h, w = img.shape
     edge_map = np.zeros((h, w), dtype=np.uint8)
